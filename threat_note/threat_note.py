@@ -1046,8 +1046,17 @@ def download(uid):
 def stix(uid):
 
 
-    #These are the SQL Statements for the various peices of data in the DB  
-    sqlobject = "select object from indicators where campaign='" + uid + "'"
+    #These are the SQL Statements for the various peices of data in the DB
+
+    #Count of the AddressObjects
+    sqlcount = "select count(object) as count from indicators where campaign='" + uid + "'"
+    #Count of the AddressObjects
+
+    #This gets the First Indicator
+    #sqlobject1 = "select object from indicators where campaign='" + uid + "'"
+    #This gets the first Indicator
+
+    sqlobjects = "select object from indicators where campaign ='" + uid + "'"
     sqltype = "select type from indicators where campaign='" + uid + "'"
     sqlfirstseen = "select firstseen from indicators where campaign='" + uid + "'"
     sqllastseen = "select lastseen from indicators where campaign='" + uid + "'"
@@ -1066,100 +1075,265 @@ def stix(uid):
 
     #This executes the SQL statements above
 
-    #This returns the Object (ip) from the database
-    cur.execute(sqlobject)
-    excsqlobject=cur.fetchall()
-    resultobject=str(excsqlobject)
-    resultobject=resultobject.replace("(","")
-    resultobject=resultobject.replace(")","")
-    resultobject=resultobject.replace("\'","")
-    resultobject=resultobject.replace(",","")
-    resultobject=resultobject.replace("[","")
-    resultobject=resultobject.replace("]","")
+    #This returns the count of Indicators from the database
+    cur.execute(sqlobjects)
+    excsqlobjects=cur.fetchall()
+    resultobjects=str(excsqlobjects)
+    #End inidcators from Database
+    
+
+    #This returns the count of Indicators from the database
+    cur.execute(sqlcount)
+    excsqlcount=cur.fetchall()
+    resultcount=str(excsqlcount)
+    resultcount=resultcount.replace("(","")
+    resultcount=resultcount.replace(")","")
+    resultcount=resultcount.replace("\'","")
+    resultcount=resultcount.replace(",","")
+    resultcount=resultcount.replace("[","")
+    resultcount=resultcount.replace("]","")
     #End IP from Database
+
+    #This returns the Object (ip) from the database
+    cur.execute(sqlobjects)
+    excsqlobjects=cur.fetchall()
+    if resultcount > '0': 
+        resultobject1=str(excsqlobjects[0])
+        resultobject1=resultobject1.replace("(","")
+        resultobject1=resultobject1.replace(")","")
+        resultobject1=resultobject1.replace("\'","")
+        resultobject1=resultobject1.replace(",","")
+        resultobject1=resultobject1.replace("[","")
+        resultobject1=resultobject1.replace("]","")
+    if resultcount > '1':
+        resultobject2=str(excsqlobjects[1])
+        resultobject2=resultobject2.replace("(","")
+        resultobject2=resultobject2.replace(")","")
+        resultobject2=resultobject2.replace("\'","")
+        resultobject2=resultobject2.replace(",","")
+        resultobject2=resultobject2.replace("[","")
+        resultobject2=resultobject2.replace("]","")
+    if resultcount > '2':
+        resultobject3=str(excsqlobjects[2])
+        resultobject3=resultobject3.replace("(","")
+        resultobject3=resultobject3.replace(")","")
+        resultobject3=resultobject3.replace("\'","")
+        resultobject3=resultobject3.replace(",","")
+        resultobject3=resultobject3.replace("[","")
+        resultobject3=resultobject3.replace("]","")
+    #End IP from Database
+
 
     #This returns the Type from the db
     cur.execute(sqltype)
     excsqltype=cur.fetchall()
-    resulttype=str(excsqltype)
-    resulttype=resulttype.replace("(","")
-    resulttype=resulttype.replace(")","")
-    resulttype=resulttype.replace("\'","")
-    resulttype=resulttype.replace(",","")
-    resulttype=resulttype.replace("[","")
-    resulttype=resulttype.replace("]","")
+    if resultcount > '0': 
+        resulttype1=str(excsqltype[0])
+        resulttype1=resulttype1.replace("(","")
+        resulttype1=resulttype1.replace(")","")
+        resulttype1=resulttype1.replace("\'","")
+        resulttype1=resulttype1.replace(",","")
+        resulttype1=resulttype1.replace("[","")
+        resulttype1=resulttype1.replace("]","")
+    if resultcount > '1':
+        resulttype2=str(excsqltype[1])
+        resulttype2=resulttype2.replace("(","")
+        resulttype2=resulttype2.replace(")","")
+        resulttype2=resulttype2.replace("\'","")
+        resulttype2=resulttype2.replace(",","")
+        resulttype2=resulttype2.replace("[","")
+        resulttype2=resulttype2.replace("]","")
+    if resultcount > '2':
+        resulttype3=str(excsqltype[2])
+        resulttype3=resulttype3.replace("(","")
+        resulttype3=resulttype3.replace(")","")
+        resulttype3=resulttype3.replace("\'","")
+        resulttype3=resulttype3.replace(",","")
+        resulttype3=resulttype3.replace("[","")
+        resulttype3=resulttype3.replace("]","")
     #End Type from DB
 
     #This returns the Firstseen from the DB
     cur.execute(sqlfirstseen)
     excsqlfirstseen=cur.fetchall()
-    resultfirstseen=str(excsqlfirstseen)
-    resultfirstseen=resultfirstseen.replace("(","")
-    resultfirstseen=resultfirstseen.replace(")","")
-    resultfirstseen=resultfirstseen.replace("\'","")
-    resultfirstseen=resultfirstseen.replace(",","")
-    resultfirstseen=resultfirstseen.replace("[","")
-    resultfirstseen=resultfirstseen.replace("]","")
+    if resultcount > '0': 
+        resultfirstseen1=str(excsqlfirstseen[0])
+        resultfirstseen1=resultfirstseen1.replace("(","")
+        resultfirstseen1=resultfirstseen1.replace(")","")
+        resultfirstseen1=resultfirstseen1.replace("\'","")
+        resultfirstseen1=resultfirstseen1.replace(",","")
+        resultfirstseen1=resultfirstseen1.replace("[","")
+        resultfirstseen1=resultfirstseen1.replace("]","")
+    if resultcount > '1':
+        resultfirstseen2=str(excsqlfirstseen[1])
+        resultfirstseen2=resultfirstseen2.replace("(","")
+        resultfirstseen2=resultfirstseen2.replace(")","")
+        resultfirstseen2=resultfirstseen2.replace("\'","")
+        resultfirstseen2=resultfirstseen2.replace(",","")
+        resultfirstseen2=resultfirstseen2.replace("[","")
+        resultfirstseen2=resultfirstseen2.replace("]","")
+    if resultcount > '2':
+        resultfirstseen3=str(excsqlfirstseen[2])
+        resultfirstseen3=resultfirstseen3.replace("(","")
+        resultfirstseen3=resultfirstseen3.replace(")","")
+        resultfirstseen3=resultfirstseen3.replace("\'","")
+        resultfirstseen3=resultfirstseen3.replace(",","")
+        resultfirstseen3=resultfirstseen3.replace("[","")
+        resultfirstseen3=resultfirstseen3.replace("]","")
     #End first seen from DB
 
     #This returns the Lastseen from the DB
     cur.execute(sqllastseen)
     excsqllastseen=cur.fetchall()
-    resultlastseen=str(excsqllastseen)
-    resultlastseen=resultlastseen.replace("(","")
-    resultlastseen=resultlastseen.replace(")","")
-    resultlastseen=resultlastseen.replace("\'","")
-    resultlastseen=resultlastseen.replace(",","")
-    resultlastseen=resultlastseen.replace("[","")
-    resultlastseen=resultlastseen.replace("]","")
+    if resultcount > '0': 
+        resultlastseen1=str(excsqllastseen[0])
+        resultlastseen1=resultlastseen1.replace("(","")
+        resultlastseen1=resultlastseen1.replace(")","")
+        resultlastseen1=resultlastseen1.replace("\'","")
+        resultlastseen1=resultlastseen1.replace(",","")
+        resultlastseen1=resultlastseen1.replace("[","")
+        resultlastseen1=resultlastseen1.replace("]","")
+    if resultcount > '1':
+        resultlastseen2=str(excsqllastseen[1])
+        resultlastseen2=resultfirstseen2.replace("(","")
+        resultlastseen2=resultfirstseen2.replace(")","")
+        resultlastseen2=resultfirstseen2.replace("\'","")
+        resultlastseen2=resultfirstseen2.replace(",","")
+        resultlastseen2=resultfirstseen2.replace("[","")
+        resultlastseen2=resultfirstseen2.replace("]","")
+    if resultcount > '2':
+        resultlastseen3=str(excsqllastseen[2])
+        resultlastseen3=resultlastseen3.replace("(","")
+        resultlastseen3=resultlastseen3.replace(")","")
+        resultlastseen3=resultlastseen3.replace("\'","")
+        resultlastseen3=resultlastseen3.replace(",","")
+        resultlastseen3=resultlastseen3.replace("[","")
+        resultlastseen3=resultlastseen3.replace("]","")
+
     #End Last Seen from DB
 
     #this returns the diamonmodel from the DB
     cur.execute(sqldiamond)
     excsqldiamond=cur.fetchall()
-    resultdiamond=str(excsqldiamond)
-    resultdiamond=resultdiamond.replace("(","")
-    resultdiamond=resultdiamond.replace(")","")
-    resultdiamond=resultdiamond.replace("\'","")
-    resultdiamond=resultdiamond.replace(",","")
-    resultdiamond=resultdiamond.replace("[","")
-    resultdiamond=resultdiamond.replace("]","")
+    if resultcount > '0': 
+        resultdiamond1=str(excsqldiamond[0])
+        resultdiamond1=resultdiamond1.replace("(","")
+        resultdiamond1=resultdiamond1.replace(")","")
+        resultdiamond1=resultdiamond1.replace("\'","")
+        resultdiamond1=resultdiamond1.replace(",","")
+        resultdiamond1=resultdiamond1.replace("[","")
+        resultdiamond1=resultdiamond1.replace("]","")
+    if resultcount > '1':
+        resultdiamond2=str(excsqldiamond[1])
+        resultdiamond2=resultdiamond2.replace("(","")
+        resultdiamond2=resultdiamond2.replace(")","")
+        resultdiamond2=resultdiamond2.replace("\'","")
+        resultdiamond2=resultdiamond2.replace(",","")
+        resultdiamond2=resultdiamond2.replace("[","")
+        resultdiamond2=resultdiamond2.replace("]","")
+    if resultcount > '2':
+        resultdiamond3=str(excsqldiamond[2])
+        resultdiamond3=resultdiamond3.replace("(","")
+        resultdiamond3=resultdiamond3.replace(")","")
+        resultdiamond3=resultdiamond3.replace("\'","")
+        resultdiamond3=resultdiamond3.replace(",","")
+        resultdiamond3=resultdiamond3.replace("[","")
+        resultdiamond3=resultdiamond3.replace("]","")
+
     #End diamond model from DB
     
     #This returns the comments from the DB
     cur.execute(sqlcomments)
-    excsqlcomments=cur.fetchall()
-    resultcomments=str(excsqlcomments)
-    resultcomments=resultcomments.replace("(","")
-    resultcomments=resultcomments.replace(")","")
-    resultcomments=resultcomments.replace("\'","")
-    resultcomments=resultcomments.replace(",","")
-    resultcomments=resultcomments.replace("[","")
-    resultcomments=resultcomments.replace("]","")
+    excsqlcomments=cur.fetchall()        
+    if resultcount > '0': 
+        resultcomments1=str(excsqlcomments[0])
+        resultcomments1=resultcomments1.replace("(","")
+        resultcomments1=resultcomments1.replace(")","")
+        resultcomments1=resultcomments1.replace("\'","")
+        resultcomments1=resultcomments1.replace(",","")
+        resultcomments1=resultcomments1.replace("[","")
+        resultcomments1=resultcomments1.replace("]","")
+    if resultcount > '1':
+        resultcomments2=str(excsqlcomments[1])
+        resultcomments2=resultcomments2.replace("(","")
+        resultcomments2=resultcomments2.replace(")","")
+        resultcomments2=resultcomments2.replace("\'","")
+        resultcomments2=resultcomments2.replace(",","")
+        resultcomments2=resultcomments2.replace("[","")
+        resultcomments2=resultcomments2.replace("]","")
+    if resultcount > '2':
+        resultcomments3=str(excsqlcomments[2])
+        resultcomments3=resultcomments3.replace("(","")
+        resultcomments3=resultcomments3.replace(")","")
+        resultcomments3=resultcomments3.replace("\'","")
+        resultcomments3=resultcomments3.replace(",","")
+        resultcomments3=resultcomments3.replace("[","")
+        resultcomments3=resultcomments3.replace("]","")
     #end comments from DB
 
     #This returns the tags from the DB
     cur.execute(sqltags)
     excsqltags=cur.fetchall()
-    resulttags=str(excsqltags)
-    resulttags=resulttags.replace("(","")
-    resulttags=resulttags.replace(")","")
-    resulttags=resulttags.replace("\'","")
-    resulttags=resulttags.replace(",","")
-    resulttags=resulttags.replace("[","")
-    resulttags=resulttags.replace("]","")
+    if resultcount > '0': 
+        resulttags1=str(excsqltags[0])
+        resulttags1=resulttags1.replace("(","")
+        resulttags1=resulttags1.replace(")","")
+        resulttags1=resulttags1.replace("\'","")
+        resulttags1=resulttags1.replace(",","")
+        resulttags1=resulttags1.replace("[","")
+        resulttags1=resulttags1.replace("]","")
+    if resultcount > '1':
+        resulttags2=str(excsqltags[1])
+        resulttags2=resulttags2.replace("(","")
+        resulttags2=resulttags2.replace(")","")
+        resulttags2=resulttags2.replace("\'","")
+        resulttags2=resulttags2.replace(",","")
+        resulttags2=resulttags2.replace("[","")
+        resulttags2=resulttags2.replace("]","")
+    if resultcount > '2':
+        resulttags3=str(excsqltags[2])
+        resulttags3=resulttags3.replace("(","")
+        resulttags3=resulttags3.replace(")","")
+        resulttags3=resulttags3.replace("\'","")
+        resulttags3=resulttags3.replace(",","")
+        resulttags3=resulttags3.replace("[","")
+        resulttags3=resulttags3.replace("]","")
+    
     #End Tags from DB
 
     pkg = STIXPackage()
-        
+
     # Create the indicator
-    stixindicator = STIXIndicator(title=resultcomments)
-    stixindicator.add_indicator_type("IP Watchlist")
-    address = Address(category= resulttype)
-    address.address_value = resultobject
-    address.address_value.condition = "Equals"
-    stixindicator.observable = address
-    pkg.add_indicator(stixindicator)
+    #Lazy hack on Multi-Indicator(s) This should be a loop
+
+    if resultcount > '0':
+        stixindicator1 = STIXIndicator(title=resultcomments1)
+        stixindicator1.add_indicator_type("IP Watchlist")
+        address1 = Address(category= resulttype1)
+        address1.address_value = resultobject1
+        address1.address_value.condition = "Equals"
+        stixindicator1.observable = address1
+        pkg.add_indicator(stixindicator1)
+
+    #second Indicator if exists
+    if resultcount > '1':    
+        stixindicator2 = STIXIndicator(title=resultcomments2)
+        stixindicator2.add_indicator_type("IP Watchlist")
+        address2 = Address(category= resulttype2)
+        address2.address_value = resultobject2
+        address2.address_value.condition = "Equals"
+        stixindicator2.observable = address2
+        pkg.add_indicator(stixindicator2)
+        
+    if resultcount > '2':    
+        stixindicator3 = STIXIndicator(title=resultcomments3)
+        stixindicator3.add_indicator_type("IP Watchlist")
+        address3 = Address(category= resulttype3)
+        address3.address_value = resultobject3
+        address3.address_value.condition = "Equals"
+        stixindicator3.observable = address3
+        pkg.add_indicator(stixindicator3)
+        
 
     # Create the campaign
     campaign = Campaign(title=uid)
