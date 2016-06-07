@@ -15,7 +15,6 @@ import random
 import re
 import time
 
-
 from flask import flash
 from flask import Flask
 from flask import make_response
@@ -49,6 +48,15 @@ from werkzeug.datastructures import ImmutableMultiDict
 from wtforms import PasswordField
 from wtforms import StringField
 from wtforms.validators import DataRequired
+
+# Jason Holt - Added for the Stix Package Structure 05/12/2016
+from stix.core import STIXPackage, STIXHeader, ThreatActor, Campaign, Indicator as STIXIndicator
+from stix.campaign import Campaign, Attribution
+from cybox.objects.address_object import Address
+import sqlite3
+
+# Jason Holt - Added for the Stix Package Structure 05/12/2016
+
 
 #
 # Configuration #
@@ -697,10 +705,7 @@ def objectsummary(uid):
         odnsdata = ""
         circldata = ""
         circlssl = ""
-        pt_pdns_data = ""
-        pt_whois_data = ""
-        pt_pssl_data = ""
-        pt_host_attr_data = ""
+        ptdata = ""
         farsightdata = ""
         shodandata = ""
         # Run ipwhois or domainwhois based on the type of indicator
@@ -886,6 +891,7 @@ def profile():
         return render_template('error.html', error=e)
 
 
+
 @app.route('/victims/<uid>/info', methods=['GET'])
 @login_required
 def victimobject(uid):
@@ -908,10 +914,7 @@ def victimobject(uid):
         odnsdata = ""
         circldata = ""
         circlssl = ""
-        pt_pdns_data = ""
-        pt_whois_data = ""
-        pt_pssl_data = ""
-        pt_host_attr_data = ""
+        ptdata = ""
         farsightdata = ""
         # shodaninfo = ""
         # Run ipwhois or domainwhois based on the type of indicator
@@ -1035,6 +1038,141 @@ def download(uid):
     response.headers["Content-type"] = "text/csv"
     return response
 
+
+#Jason Holt - This App route is for the Stix Format Export 05122016
+
+@app.route('/stix/<uid>', methods=['GET'])
+@login_required
+def stix(uid):
+
+
+    #These are the SQL Statements for the various peices of data in the DB  
+    sqlobject = "select object from indicators where campaign='" + uid + "'"
+    sqltype = "select type from indicators where campaign='" + uid + "'"
+    sqlfirstseen = "select firstseen from indicators where campaign='" + uid + "'"
+    sqllastseen = "select lastseen from indicators where campaign='" + uid + "'"
+    sqldiamond = "select diamondmodel from indicators where campaign='" + uid + "'"
+    sqlconfidence = "select confidence from indicators where campaign='" + uid + "'"
+    sqlcomments = "select comments from indicators where campaign='" + uid + "'"
+    sqltags = "select tags from indicators where campaign='" + uid + "'"
+    #These are the SQL Statements for the various peices of data in the DB
+
+    #this initiates the db connection
+    conn = sqlite3.connect('threatnote.db')
+
+    
+    conn.text_factory = str
+    cur = conn.cursor()
+
+    #This executes the SQL statements above
+
+    #This returns the Object (ip) from the database
+    cur.execute(sqlobject)
+    excsqlobject=cur.fetchall()
+    resultobject=str(excsqlobject)
+    resultobject=resultobject.replace("(","")
+    resultobject=resultobject.replace(")","")
+    resultobject=resultobject.replace("\'","")
+    resultobject=resultobject.replace(",","")
+    resultobject=resultobject.replace("[","")
+    resultobject=resultobject.replace("]","")
+    #End IP from Database
+
+    #This returns the Type from the db
+    cur.execute(sqltype)
+    excsqltype=cur.fetchall()
+    resulttype=str(excsqltype)
+    resulttype=resulttype.replace("(","")
+    resulttype=resulttype.replace(")","")
+    resulttype=resulttype.replace("\'","")
+    resulttype=resulttype.replace(",","")
+    resulttype=resulttype.replace("[","")
+    resulttype=resulttype.replace("]","")
+    #End Type from DB
+
+    #This returns the Firstseen from the DB
+    cur.execute(sqlfirstseen)
+    excsqlfirstseen=cur.fetchall()
+    resultfirstseen=str(excsqlfirstseen)
+    resultfirstseen=resultfirstseen.replace("(","")
+    resultfirstseen=resultfirstseen.replace(")","")
+    resultfirstseen=resultfirstseen.replace("\'","")
+    resultfirstseen=resultfirstseen.replace(",","")
+    resultfirstseen=resultfirstseen.replace("[","")
+    resultfirstseen=resultfirstseen.replace("]","")
+    #End first seen from DB
+
+    #This returns the Lastseen from the DB
+    cur.execute(sqllastseen)
+    excsqllastseen=cur.fetchall()
+    resultlastseen=str(excsqllastseen)
+    resultlastseen=resultlastseen.replace("(","")
+    resultlastseen=resultlastseen.replace(")","")
+    resultlastseen=resultlastseen.replace("\'","")
+    resultlastseen=resultlastseen.replace(",","")
+    resultlastseen=resultlastseen.replace("[","")
+    resultlastseen=resultlastseen.replace("]","")
+    #End Last Seen from DB
+
+    #this returns the diamonmodel from the DB
+    cur.execute(sqldiamond)
+    excsqldiamond=cur.fetchall()
+    resultdiamond=str(excsqldiamond)
+    resultdiamond=resultdiamond.replace("(","")
+    resultdiamond=resultdiamond.replace(")","")
+    resultdiamond=resultdiamond.replace("\'","")
+    resultdiamond=resultdiamond.replace(",","")
+    resultdiamond=resultdiamond.replace("[","")
+    resultdiamond=resultdiamond.replace("]","")
+    #End diamond model from DB
+    
+    #This returns the comments from the DB
+    cur.execute(sqlcomments)
+    excsqlcomments=cur.fetchall()
+    resultcomments=str(excsqlcomments)
+    resultcomments=resultcomments.replace("(","")
+    resultcomments=resultcomments.replace(")","")
+    resultcomments=resultcomments.replace("\'","")
+    resultcomments=resultcomments.replace(",","")
+    resultcomments=resultcomments.replace("[","")
+    resultcomments=resultcomments.replace("]","")
+    #end comments from DB
+
+    #This returns the tags from the DB
+    cur.execute(sqltags)
+    excsqltags=cur.fetchall()
+    resulttags=str(excsqltags)
+    resulttags=resulttags.replace("(","")
+    resulttags=resulttags.replace(")","")
+    resulttags=resulttags.replace("\'","")
+    resulttags=resulttags.replace(",","")
+    resulttags=resulttags.replace("[","")
+    resulttags=resulttags.replace("]","")
+    #End Tags from DB
+
+    pkg = STIXPackage()
+        
+    # Create the indicator
+    stixindicator = STIXIndicator(title=resultcomments)
+    stixindicator.add_indicator_type("IP Watchlist")
+    address = Address(category= resulttype)
+    address.address_value = resultobject
+    address.address_value.condition = "Equals"
+    stixindicator.observable = address
+    pkg.add_indicator(stixindicator)
+
+    # Create the campaign
+    campaign = Campaign(title=uid)
+
+    pkg.add_campaign(campaign)
+
+    response = make_response(pkg.to_xml())
+    response.headers["Content-Disposition"] = "attachment; filename=" + uid + "-campaign.xml"
+    response.headers["Content-type"] = "application/xml"
+
+    return response
+
+#Jason Holt - This App route is for the Stix Format Export 05122016
 
 
 @app.teardown_appcontext
